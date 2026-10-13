@@ -1,0 +1,43 @@
+---
+import { render, type CollectionEntry } from 'astro:content';
+import { getSeason } from '../lib/getSeason';
+
+interface Props {
+  entries: CollectionEntry<'diary'>[];
+}
+
+const { entries } = Astro.props;
+
+const items = await Promise.all(
+  entries.map(async (entry) => {
+    const { Content } = await render(entry);
+    const dateStr = entry.data.date.toISOString().slice(0, 10);
+    const season = getSeason(dateStr);
+    const [y, m, d] = dateStr.split('-').map(Number);
+    return {
+      id: entry.id,
+      Content,
+      sekki: season.sekki,
+      kou: season.kou,
+      date: `${y}.${m}.${d}`,
+    };
+  })
+);
+---
+
+<main class="diary-list">
+  {
+    items.map(({ id, Content, sekki, kou, date }) => (
+      <article class="diary-item">
+        <p class="sekki">{sekki}</p>
+        <p class="kou">{kou}</p>
+        <p class="date">
+          <a href={`/diary/${id}/`}>{date}</a>
+        </p>
+        <div class="body">
+          <Content />
+        </div>
+      </article>
+    ))
+  }
+</main>

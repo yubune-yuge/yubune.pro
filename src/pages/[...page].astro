@@ -1,0 +1,30 @@
+---
+import type { GetStaticPaths, InferGetStaticPropsType } from 'astro';
+import { getCollection } from 'astro:content';
+import Layout from '../layouts/Layout.astro';
+import DiaryEntries from '../components/DiaryEntries.astro';
+import Pager from '../components/Pager.astro';
+
+export const getStaticPaths = (async ({ paginate }) => {
+  const entries = await getCollection('diary');
+  const sorted = [...entries].sort(
+    (a, b) => b.data.date.getTime() - a.data.date.getTime()
+  );
+  return paginate(sorted, { pageSize: 10 });
+}) satisfies GetStaticPaths;
+
+type Props = InferGetStaticPropsType<typeof getStaticPaths>;
+const { page } = Astro.props;
+---
+
+<Layout title="ゆぶね">
+  <h1 class="site-title"><a href="/">ゆぶね</a></h1>
+
+  <DiaryEntries entries={page.data} />
+
+  <Pager
+    newerUrl={page.url.prev}
+    olderUrl={page.url.next}
+    show={page.lastPage > 1}
+  />
+</Layout>

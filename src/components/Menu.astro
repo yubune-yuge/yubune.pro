@@ -1,0 +1,84 @@
+---
+import { getCollection } from 'astro:content';
+
+const entries = await getCollection('diary');
+
+// カテゴリごとの日記数を数える
+const counts = new Map<string, number>();
+for (const entry of entries) {
+  const name = entry.data.category;
+  counts.set(name, (counts.get(name) ?? 0) + 1);
+}
+
+// 日記が多いカテゴリを上に並べる（同数なら五十音順）
+const categories = [...counts.entries()]
+  .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0], 'ja'))
+  .map(([name, count]) => ({
+    name,
+    count,
+    href: `/category/${encodeURIComponent(name)}/`,
+  }));
+---
+
+<button
+  class="menu-button"
+  type="button"
+  aria-label="メニューを開く"
+  aria-expanded="false"
+  aria-controls="site-menu"
+>
+  <span></span>
+  <span></span>
+  <span></span>
+</button>
+
+<nav id="site-menu" class="menu-panel" aria-label="メニュー" hidden>
+  <div class="menu-inner">
+    <ul class="menu-list">
+      <li><a href="/">すべての日記</a></li>
+      <li><a href="/profile/">プロフィール</a></li>
+    </ul>
+
+    {
+      categories.length > 0 && (
+        <>
+          <p class="menu-label">カテゴリ</p>
+          <ul class="menu-list">
+            {categories.map((c) => (
+              <li>
+                <a href={c.href}>
+                  {c.name}
+                  <span class="menu-count">{c.count}</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </>
+      )
+    }
+  </div>
+</nav>
+
+<script>
+  const button = document.querySelector<HTMLButtonElement>('.menu-button');
+  const panel = document.getElementById('site-menu');
+
+  if (button && panel) {
+    const setOpen = (open: boolean) => {
+      button.setAttribute('aria-expanded', String(open));
+      button.setAttribute('aria-label', open ? 'メニューを閉じる' : 'メニューを開く');
+      panel.hidden = !open;
+      document.body.classList.toggle('menu-open', open);
+    };
+
+    button.addEventListener('click', () => setOpen(panel.hidden));
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape') setOpen(false);
+    });
+
+    panel.addEventListener('click', (event) => {
+      if ((event.target as HTMLElement).closest('a')) setOpen(false);
+    });
+  }
+</script>

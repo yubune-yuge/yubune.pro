@@ -1,0 +1,142 @@
+:root {
+  --color-bg: #ffffff;
+  --color-text: #4a3728;
+  --color-season: #4e8ccf;
+  --color-date: #888888;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  padding: 6.5rem 1.5rem 7rem;
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: 'Noto Serif JP', 'Hiragino Mincho ProN', 'Yu Mincho', serif;
+  font-weight: 400;
+  font-size: 1rem;
+  line-height: 1.9;
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* ---------- サイトタイトル ---------- */
+.site-title {
+  margin: 0 0 6.5rem;
+  text-align: center;
+  /* タイトルの字体を変えたい場合は、この1行を書き換えます */
+  font-family: 'Shippori Mincho', 'Noto Serif JP', serif;
+  font-weight: 500;
+  font-size: 2.6rem;
+  line-height: 1.5;
+  letter-spacing: 0.05em;
+  color: #216b80;
+}
+
+/* ---------- 本文エリアの幅 ---------- */
+.diary-list,
+.diary-entry,
+.pager {
+  max-width: 48rem;
+  margin: 0 auto;
+}
+
+/* ---------- 日記1件 ---------- */
+.diary-item {
+  margin-bottom: 6rem;
+}
+
+.sekki,
+.kou,
+.date {
+  margin: 0;
+  line-height: 2;
+}
+
+.sekki {
+  font-size: 1.1rem;
+  color: var(--color-season);
+}
+
+.kou {
+  font-size: 1rem;
+  color: var(--color-season);
+}
+
+.date {
+  font-size: 0.95rem;
+  color: var(--color-date);
+  margin-bottom: 2.4rem;
+}
+
+.body p {
+  margin: 0 0 0.2rem;
+  line-height: 1.9;
+}
+
+.body > :last-child {
+  margin-bottom: 0;
+}
+
+/* ---------- ← → ページ送り ---------- */
+.pager {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 1rem;
+  font-size: 1.4rem;
+  line-height: 1;
+  color: var(--color-season);
+}
+
+.pager-link {
+  padding: 0.4rem 0.6rem;
+  margin: 0 -0.6rem;
+}
+
+a.pager-link:hover {
+  opacity: 0.6;
+}
+
+.pager-link.is-disabled {
+  visibility: hidden;
+}
+
+/* ---------- 個別ページ ---------- */
+.back-link {
+  display: inline-block;
+  margin-top: 4rem;
+  font-size: 0.95rem;
+  color: var(--color-season);
+}
+
+.back-link:hover {
+  opacity: 0.6;
+}
+
+/* ---------- スマートフォン ---------- */
+@media (max-width: 600px) {
+  body {
+    padding: 3.5rem 1.2rem 5rem;
+  }
+
+  .site-title {
+    font-size: 2.1rem;
+    margin-bottom: 4rem;
+  }
+
+  .diary-item {
+    margin-bottom: 4.5rem;
+  }
+}

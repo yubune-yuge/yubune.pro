@@ -1,0 +1,15 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { Content } from '../data/profile.md';
+---
+
+<Layout title="プロフィール | ゆぶね">
+  <h1 class="site-title"><a href="/">ゆぶね</a></h1>
+
+  <article class="diary-entry profile">
+    <p class="page-label">プロフィール</p>
+    <div class="body">
+      <Content />
+    </div>
+  </article>
+</Layout>

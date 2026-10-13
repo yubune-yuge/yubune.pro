@@ -1,0 +1,37 @@
+---
+import type { GetStaticPaths, InferGetStaticPropsType } from 'astro';
+import { getCollection } from 'astro:content';
+import Layout from '../../../layouts/Layout.astro';
+import DiaryEntries from '../../../components/DiaryEntries.astro';
+import Pager from '../../../components/Pager.astro';
+
+export const getStaticPaths = (async ({ paginate }) => {
+  const entries = await getCollection('diary');
+  const categories = [...new Set(entries.map((entry) => entry.data.category))];
+
+  return categories.flatMap((category) => {
+    const filtered = entries
+      .filter((entry) => entry.data.category === category)
+      .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+    return paginate(filtered, { params: { category }, pageSize: 10 });
+  });
+}) satisfies GetStaticPaths;
+
+type Props = InferGetStaticPropsType<typeof getStaticPaths>;
+const { page } = Astro.props;
+const { category } = Astro.params;
+---
+
+<Layout title={`${category} | ゆぶね`}>
+  <h1 class="site-title"><a href="/">ゆぶね</a></h1>
+
+  <p class="page-label">{category}</p>
+
+  <DiaryEntries entries={page.data} />
+
+  <Pager
+    newerUrl={page.url.prev}
+    olderUrl={page.url.next}
+    show={page.lastPage > 1}
+  />
+</Layout>

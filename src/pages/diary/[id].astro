@@ -1,0 +1,37 @@
+---
+import { getCollection, render } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+import { getSeason } from '../../lib/getSeason';
+
+export async function getStaticPaths() {
+  const entries = await getCollection('diary');
+  return entries.map((entry) => ({
+    params: { id: entry.id },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+
+const dateStr = entry.data.date.toISOString().slice(0, 10);
+const season = getSeason(dateStr);
+const [y, m, d] = dateStr.split('-').map(Number);
+const formattedDate = `${y}.${m}.${d}`;
+---
+
+<Layout title={`${formattedDate} | ゆぶね`}>
+  <h1 class="site-title"><a href="/">ゆぶね</a></h1>
+
+  <article class="diary-entry">
+    <p class="sekki">{season.sekki}</p>
+    <p class="kou">{season.kou}</p>
+    <p class="date">{formattedDate}</p>
+
+    <div class="body">
+      <Content />
+    </div>
+
+    <a class="back-link" href="/">← 一覧に戻る</a>
+  </article>
+</Layout>

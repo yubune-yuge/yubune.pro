@@ -1,0 +1,117 @@
+/* ---------- メニューボタン（左上） ---------- */
+.menu-button {
+  position: fixed;
+  top: 1.1rem;
+  left: 1.1rem;
+  z-index: 60;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+  width: 2.75rem;
+  height: 2.75rem;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+.menu-button span {
+  display: block;
+  width: 22px;
+  height: 1px;
+  background: var(--color-text);
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.menu-button:hover {
+  opacity: 0.6;
+}
+
+.menu-button[aria-expanded='true'] span:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+
+.menu-button[aria-expanded='true'] span:nth-child(2) {
+  opacity: 0;
+}
+
+.menu-button[aria-expanded='true'] span:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+/* ---------- メニュー本体（画面いっぱいの白） ---------- */
+.menu-panel {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  overflow-y: auto;
+  padding: 6.5rem 1.5rem 4rem;
+  background: var(--color-bg);
+}
+
+.menu-panel[hidden] {
+  display: none;
+}
+
+body.menu-open {
+  overflow: hidden;
+}
+
+.menu-inner {
+  max-width: 48rem;
+  margin: 0 auto;
+}
+
+.menu-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.menu-list a {
+  display: inline-block;
+  padding: 0.45rem 0;
+  font-size: 1.05rem;
+  line-height: 1.6;
+}
+
+.menu-list a:hover {
+  color: var(--color-season);
+}
+
+.menu-label {
+  margin: 2.6rem 0 0.4rem;
+  font-size: 0.9rem;
+  color: var(--color-date);
+}
+
+.menu-count {
+  margin-left: 0.7em;
+  font-size: 0.85rem;
+  color: var(--color-date);
+}
+
+/* ---------- ページ見出し（カテゴリ名・プロフィール） ---------- */
+.page-label {
+  max-width: 48rem;
+  margin: 0 auto 4rem;
+  font-size: 1.1rem;
+  line-height: 2;
+  color: var(--color-season);
+}
+
+.profile .body p {
+  margin-bottom: 1.2rem;
+}
+
+@media (max-width: 600px) {
+  .menu-panel {
+    padding: 5rem 1.2rem 3rem;
+  }
+
+  .page-label {
+    margin-bottom: 3rem;
+  }
+}

@@ -1,0 +1,36 @@
+---
+interface Props {
+  /** ← で行く、より新しい日記のページ */
+  newerUrl?: string;
+  /** → で行く、より過去の日記のページ */
+  olderUrl?: string;
+  show?: boolean;
+}
+
+const { newerUrl, olderUrl, show = true } = Astro.props;
+---
+
+{
+  show && (
+    <nav class="pager" aria-label="ページ送り">
+      {newerUrl ? (
+        <a class="pager-link" href={newerUrl} aria-label="より新しい日記へ">
+          ←
+        </a>
+      ) : (
+        <span class="pager-link is-disabled" aria-hidden="true">
+          ←
+        </span>
+      )}
+      {olderUrl ? (
+        <a class="pager-link" href={olderUrl} aria-label="より過去の日記へ">
+          →
+        </a>
+      ) : (
+        <span class="pager-link is-disabled" aria-hidden="true">
+          →
+        </span>
+      )}
+    </nav>
+  )
+}
